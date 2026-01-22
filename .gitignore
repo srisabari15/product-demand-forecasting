@@ -1,24 +1,16 @@
-# MLflow
-mlruns/
-artifacts/
-
-# Models
-models/
-*.pkl
-*.joblib
-*.h5
-
-# Data
-data/
-datasets/
-
 # Python
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
+.venv/
+env/
 
-# Env
-venv/
-.env
+# ML artifacts
+mlruns/
+models/*.pkl
+data/
 
-# IDE
-.vscode/
+# OS
+.DS_Store
+Thumbs.db
