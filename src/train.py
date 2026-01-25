@@ -1,6 +1,4 @@
-# =====================================================
-# STEP 0: MLflow Tracking Setup
-# =====================================================
+
 import mlflow
 
 # Store experiments locally
@@ -11,9 +9,8 @@ mlflow.set_experiment("Product_Demand_Forecasting")
 
 print("train.py started")
 
-# =====================================================
-# STEP 1: Imports
-# =====================================================
+STEP 1: Imports
+
 import pandas as pd
 import joblib
 import os
@@ -36,17 +33,16 @@ from sklearn.impute import SimpleImputer
 
 print("All imports successful")
 
-# =====================================================
 # STEP 2: Load Dataset
-# =====================================================
+
 DATA_PATH = r"D:\\ML ops\Dataset\\Historical Product Demand.csv"
 df = pd.read_csv(DATA_PATH)
 
 print("Dataset loaded")
 
-# =====================================================
+
 # STEP 3: Clean Order_Demand column
-# =====================================================
+
 df["Order_Demand"] = (
     df["Order_Demand"]
     .astype(str)
@@ -55,26 +51,23 @@ df["Order_Demand"] = (
     .astype(int)
 )
 
-# =====================================================
-# STEP 4: Date Feature Engineering
-# =====================================================
 df["Date"] = pd.to_datetime(df["Date"], errors="coerce")
 
 df["year"] = df["Date"].dt.year
 df["month"] = df["Date"].dt.month
 df["day"] = df["Date"].dt.day
 
-# =====================================================
+
 # STEP 5: Feature Selection
-# =====================================================
+
 X = df[
     ["Product_Code", "Warehouse", "Product_Category", "year", "month", "day"]
 ]
 y = df["Order_Demand"]
 
-# =====================================================
+
 # STEP 6: Train-Test Split
-# =====================================================
+
 X_train, X_test, y_train, y_test = train_test_split(
     X,
     y,
@@ -84,9 +77,9 @@ X_train, X_test, y_train, y_test = train_test_split(
 
 print("Train-test split completed")
 
-# =====================================================
+
 # STEP 7: Preprocessing Pipeline (NaN SAFE)
-# =====================================================
+
 categorical_features = [
     "Product_Code",
     "Warehouse",
@@ -114,9 +107,9 @@ preprocessor = ColumnTransformer(
     ]
 )
 
-# =====================================================
+
 # STEP 8: Model Pipeline
-# =====================================================
+
 model = Pipeline(steps=[
     ("preprocessing", preprocessor),
     ("regressor", RandomForestRegressor(
@@ -131,9 +124,9 @@ print("Starting model training...")
 model.fit(X_train, y_train)
 print("Model training finished")
 
-# =====================================================
+
 # STEP 9: MLflow Training & Tracking
-# =====================================================
+
 with mlflow.start_run():
 
     # -----------------------------
